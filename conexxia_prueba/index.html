@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConexxiaEG - Internet, TV & Servicios</title>
+
+    <meta name="description" content="ConexxiaEG - Internet, TV y Seguridad. Conexiones de banda ancha, fibra óptica y servicios empresariales en Guinea Ecuatorial."/>
+    <meta name="keywords" content="ConexxiaEG, Internet, TV, Seguridad, Banda Ancha, Fibra Óptica, Servicios Empresariales, Guinea Ecuatorial">
+    <meta name="author" content="Luis Rafael Eyoma">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="head-inner">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">
+                    <img src="static/img/logo-conexxia-solo.png" alt="ConexxiaEG Logo">
+                </div>
+                <!-- <div>
+                    <div style="font-weight: 700;">CONEXXIA</div>
+                    <div style="font-size: 0.82rem; color: var(--muted);">Telecomunicaciones</div>
+                </div> -->
+            </div>
+
+            <nav role="navigation" aria-label="Principal">
+                <a href="#" aria-current="page">Inicio</a>
+                <a href="#">Internet</a>
+                <a href="#">TV + Internet</a>
+                <a href="#">Seguridad</a>
+                <a href="templates/contact.html">Contacto</a>
+            </nav>
+
+            <div class="cta">
+                <button class="btn secondary" onclick="scrollToContact()">Contactar</button>
+                <button class="btn" onclick="openCall()">Llámanos</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" role="region" aria-label="Hero">
+            <div class="wrap hero-left">
+                <span class="eyebrow reveal">INTERNET SIN LÍMITES</span>
+                <h1 class="reveal">Servicios de acceso a internet y TV con <span style="color:var(--red)">conexión confiable</span></h1>
+                <p class="hero-lead reveal">Descubre las mejores ofertas de internet, microserrvicios y sistemas satelitales. Soluciones para hogares, pymes y empresas con soporte local y atención personalizda.</p>
+
+                <div class="hero-feats reveal">
+                    <div class="feature-pill"><i class="fa-solid fa-bolt" style="margin-right: 8px;"></i> Alta velocidad</div>
+                    <div class="feature-pill"><i class="fa-solid fa-shield-halved"  style="margin-right: 8px;"></i> Soporte 24/7</div>
+                    <div class="feature-pill"><i class="fa-solid fa-wifi"  style="margin-right: 8px;"></i> Cobertura amplia</div>
+                </div>
+
+                <div style="margin-top:18px" class="reveal">
+                    <button class="btn">Explorar ofertas</button>
+                    <button class="btn secondary" style="margin-left:8px" onclick="openCall()">Atención al cliente</button>
+                </div>
+            </div>
+
+            <aside class="wrap hero-card reveal" aria-hidden="true">
+                <img src="static/img/surprised-african-male-sitting-couch-home-eating-popcorn-watching-exciting-tv-show-online-laptop-computer-shocked-with-cliffhanger-ending-detective-series-keeping-.png" alt="Familia uando internet">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+                    <div>
+                        <div style="font-weight:800">Conexxia TV + Internet</div>
+                        <div style="color:var(--muted);font-size:.95rem">Paquetes adaptados a tus necesidades</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="price-bad">Desde 5MB</div>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <!-- OFERTAS -->
+        <section class="offers" aria-label="Ofertas">
+            <div class="wrap" style="text-align:center;margin-bottom:18px">
+                <h2 class="reveal">Conozca nuestras ofertas</h2>
+                <p class="reveal" style="color:var(--muted)">Paquetes combinados de Internet + TV adaptados a cada hogar y presupuesto.</p>
+            </div>
+
+            <div class="offers-grid reveal">
+                <div class="offer-card">
+                    <div class="offer-speed">2 MB</div>
+                    <div style="color:var(--muted)">Internet + TV</div>
+                    <div class="offer-price">35.000 XAF + TV 9.000 XAF</div>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-speed">3 MB</div>
+                    <div  style="color:var(--muted)">Internet + TV</div>
+                    <div class="offer-price">50.000 XAF + TV 8.000 XAF</div>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-speed">5 MB</div>
+                    <div  style="color:var(--muted)">Internet + TV</div>
+                    <div class="offer-price">65.000 XAF + TV 7.500 XAF</div>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-speed">7 MB</div>
+                    <div  style="color:var(--muted)">Internet + TV</div>
+                    <div class="offer-price">91.000 XAF + TV 7.000 XAF</div>
+                </div>
+                <div class="offer-card">
+                    <div class="offer-speed">9 MB</div>
+                    <div  style="color:var(--muted)">Internet + TV</div>
+                    <div class="offer-price">117.000 XAF + TV 5.000 XAF</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section class="services-band" arial-label="Servicios">
+            <div class="services-inner reveal">
+                <div>
+                    <h3>Servicios principales</h3>
+                    <p style="color:rgba(255,255,255,0.85)">Sistemas de Fibra Óptica, Microondas, Enlaces Satelitales y soluciones para empresas.</p>
+                    <div style="margin-top:12px"><button class="btn" onclick="document.location.href='templates/contact.html'">Solicitar asesoría</button></div>
+                </div>
+                <div class="svc-list">
+                    <div class="svc-card">
+                        <div class="svc-icon"><i class="fa-solid fa-wifi"></i></div>
+                        <div><strong>Fibra Óptica</strong><div style="color:rgba(255,255,255,0.8)">Enlaces estables y de alta velocidad</div></div>
+                    </div>
+
+                    <div class="svc-card">
+                        <div class="svc-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+                        <div><strong>Microondas</strong><div style="color:rgba(255,255,255,0.8)">Enlaces punto a punto para empresas</div></div>
+                    </div>
+
+                    <div class="svc-card">
+                        <div class="svc-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                        <div><strong>Sistemas Satelitales</strong><div style="color:rgba(255,255,255,0.8)">Cobertura donde no llega la fibra</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIFERENCIA -->
+        <section class="diffs" aria-label="Diferenciales">
+            <div class="wrap" style="text-align:center;margin-bottom:18px">
+                <h3 class="reveal">Lo que nos diferencia</h3>
+            </div>
+            <div class="diffs-grid reveal">
+                <div class="diff"><i class="fa-solid fa-headset"></i><h4>Atención personalizada</h4><p style="color:var(--muted)">Soporte local con respuesta rápida.</p></div>
+                <div class="diff"><i class="fa-solid fa-tools"></i><h4>Mantenimiento gratuito</h4><p style="color:var(--muted)">Soporte preventivo y correctivo incluido.</p></div>
+                <div class="diff"><i class="fa-solid fa-lock"></i><h4>Sin permanencia</h4><p style="color:var(--muted)">Planes flexibles sin ataduras largas.</p></div>
+                <div class="diff"><i class="fa-solid fa-wrench"></i><h4>Paquetes a medida</h4><p style="color:var(--muted)">Soluciones adaptadas a cada cliente.</p></div>
+            </div>
+        </section>
+
+        <!-- CTA BANNER -->
+        <section class="cta-banner reveal" role="region" aria-label="Llamada a la acción">
+            <div style="flex:1">
+                <strong style="font-size:1.2rem">¿Aún no eres cliente?</strong>
+                <div style="color:var(--muted);margin-top:6px">Llámanos gratis sin compromiso y descubre la mejor oferta para tu zona.</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center">
+                <button class="btn" onclick="openCall()">222 *** *** (Malabo)</button>
+                <button class="btn secondary" onclick="openCall()">222 *** *** (Bata)</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div style="display:flex;gap:12px;align-items:center">
+                    <div class="logo" style="width:200px;height:60px;border-radius:12px;font-weight:800">
+                        <img src="static/img/logo-conexxia-solo-blanco.png" alt="logo-conexxia">
+                    </div>
+                    <!-- <div>
+                        <div style="font-weight:700;color:#fff">CONEXXIA</div>
+                        <div style="color:#ddd;font-size:.9rem">Telecomunicaciones</div>
+                    </div> -->
+                </div>
+                <div style="margin-top:12px;color:#bbb;font-size:.95rem">© 2025 Conexxiaeg</div>
+            </div>
+
+            <div>
+                <h4 style="color:#fff">Servicios</h4>
+                <ul style="list-style:none;padding:0;margin:8px 0;color:#ddd">
+                    <li>Internet</li>
+                    <li>TV + Internet</li>
+                    <li>Conexxia Security</li>
+                    <li>Otros servicios</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="color:#fff">Contáctanos</h4>
+                <div style="color:#ddd;margin-top:8px">Tel: 222 *** *** (Malabo)</div>
+                <div style="color:#ddd">Tel: 222 *** *** (Bata)</div>
+                <div style="margin-top:8px"><a href="mailto:info@conexxiaeg.com" style="color:var(--accent);text-decoration:none">info@conexxiaeg.com</a></div>
+                <div style="margin-top:12px" class="socials">
+                    <a href="#" aria-label="facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // simple interactivity
+        function openCall(){ alert('Llamar: 222 *** *** / 222 *** ***'); }
+        function scrollToContact(){ location.href = 'templates/contact.html'; }
+
+        // reveal on scroll
+        const io = new IntersectionObserver((entries)=>{
+            entries.forEach(e=>{
+            if(e.isIntersecting) e.target.classList.add('show');
+        });
+        }, {threshold: 0.12});
+        document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    </script>
+</body>
+</html>

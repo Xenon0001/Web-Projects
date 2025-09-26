@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ConexxiaEG — Contacto</title>
+    <meta name="description" content="Contacto ConexxiaEG — Solicita información sobre Internet, TV y servicios. Llámanos o envíanos tu mensaje."/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root{
+        --red:#c8102e;
+        --accent:#ff5b6b;
+        --bg:#fff;
+        --panel:#111;
+        --muted:#666;
+        --radius:12px;
+        --maxw:1100px;
+        }
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            font-family:Poppins,system-ui;
+            background:linear-gradient(180deg,#fff,#fbfbfd);
+            color:#111;
+        }
+        
+        /* HEADER */
+        header{
+            position:sticky;
+            top:0;z-index:90;
+            background:rgba(255,255,255,0.7);
+            backdrop-filter:blur(6px);
+            border-bottom:1px solid rgba(0,0,0,0.04);
+        }
+
+        .head-inner{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;max-width:var(--maxw);
+            margin:0 auto;padding:14px 20px;
+        }
+
+        .brand{
+            display:flex;
+            gap:12px;
+            align-items:center;
+        }
+
+        .logo {
+            width: 150px;
+        }
+
+        .logo img{
+            width:100%;
+            height:auto;
+            object-fit:contain;
+        }
+
+        nav {
+            display:flex;
+            gap:18px;
+            align-items:center;
+        }
+
+        nav a {
+            color:#111;
+            text-decoration:none;
+            font-weight:600;
+            padding:8px 12px;
+            border-radius:8px;
+        }
+
+        nav a:hover{
+            background:var(--glass);
+        }
+
+        .cta{
+            display:flex;
+            gap:8px;
+            align-items:center;
+        }
+
+        .btn{
+            background:var(--red);
+            color:#fff;
+            padding:10px 14px;
+            border-radius:10px;
+            border:0;
+            cursor:pointer;
+            font-weight:700;
+            box-shadow:var(--shadow);
+            transition:transform .18s;
+        }
+
+        .btn.secondary{
+            background:transparent;
+            color:var(--red);
+            border:1px solid rgba(200,16,46,0.08);
+        }
+
+        .btn:hover{
+            transform:translateY(-4px);
+        }
+
+        /* Main */
+
+        main{
+            max-width:var(--maxw);
+            margin:28px auto;
+            padding:18px;
+        }
+
+        .hero{
+            display:grid;
+            grid-template-columns:1fr 420px;
+            gap:22px;
+            align-items:center;
+            padding:18px;
+            background:linear-gradient(90deg,#fff,rgba(255,240,240,0.02));
+            border-radius:12px;
+        }
+
+        .hero h1{
+            color:var(--red);
+            font-size:2rem;
+            margin:0
+        }
+
+        .contact-form{
+            background:#fff;
+            padding:18px;
+            border-radius:12px;
+            box-shadow:0 10px 30px rgba(4,8,20,0.06);
+        }
+
+        .field{
+            display:flex;
+            flex-direction:column;
+            margin-bottom:12px
+        }
+
+        label{
+            font-weight:600;
+            margin-bottom:6px;
+        }
+
+        input[type="text"], input[type="email"], select, textarea{
+        padding:12px;
+        border-radius:10px;
+        border:1px solid rgba(0,0,0,0.08);
+        font-size:1rem;
+        resize:none;
+        }
+
+        textarea{
+            min-height:140px;
+        }
+
+        .grid-2{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+        }
+
+        .contact-info{
+            background:linear-gradient(180deg,#111,#222);
+            color:#fff;
+            padding:18px;
+            border-radius:12px;
+        }
+
+        .contact-info h4{
+            margin:0 0 8px;
+        }
+
+        .btn{
+            background:var(--red);
+            color:#fff;
+            padding:10px 14px;
+            border-radius:10px;
+            border:0;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .muted{
+            color:var(--muted);
+        }
+
+        /* FOOTER */
+        footer{
+            background:#111;
+            padding:28px 20px;
+            color:#ddd;
+            margin-top:28px;
+        }
+        .footer-inner{
+            max-width:var(--maxw);
+            margin:0 auto;
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            gap:18px;flex-wrap:wrap;
+        }
+        .socials a{
+            color:#ddd;margin-right:8px;
+        }
+
+        @media(max-width:980px){
+            .hero{grid-template-columns:1fr}
+            .grid-2{grid-template-columns:1fr}
+        }
+
+        /* subtle form animation */
+        .fade-in{
+            opacity:0;
+            transform:translateY(12px);
+            transition:opacity .6s,transform .6s;
+        }
+
+        .fade-in.show{
+            opacity:1;
+            transform:none
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="head-inner">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">
+                    <img src="../static/img/logo-conexxia-solo.png" alt="ConexxiaEG Logo">
+                </div>
+            </div>
+
+            <nav role="navigation" aria-label="Principal">
+                <a href="../index.html">Inicio</a>
+                <a href="#">Internet</a>
+                <a href="#">TV + Internet</a>
+                <a href="#">Seguridad</a>
+                <a aria-current="page">Contacto</a>
+            </nav>
+
+            <div class="cta">
+                <button class="btn secondary" onclick="scrollToContact()">Contactar</button>
+                <button class="btn" onclick="openCall()">Llámanos</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+        <div>
+            <h1>Contacto</h1>
+            <p class="muted">Escríbenos un mensaje o llámanos — responderemos lo antes posible.</p>
+
+            <div style="margin-top:18px" class="contact-form fade-in" id="formWrap">
+                <form id="contactForm" novalidate>
+                    <div class="grid-2">
+                    <div class="field">
+                        <label for="name">Nombre completo</label>
+                        <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="field">
+                        <label for="phone">Teléfono</label>
+                        <input id="phone" name="phone" type="text" placeholder="222 *** ***" required>
+                    </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" placeholder="tu@correo.com" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="message">Escribe tu mensaje</label>
+                        <textarea id="message" name="message" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                    </div>
+
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <button class="btn" type="submit">Enviar</button>
+                        <div id="formStatus" style="color:var(--muted);font-weight:600"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <aside class="contact-info fade-in" id="contactPanel" aria-labelledby="contactPanelTitle">
+            <h4 id="contactPanelTitle">Contacto Malabo</h4>
+            <div>Dirección: Carretera del Aeropuerto, Malabo II</div>
+            <div style="margin-top:8px;font-weight:700">Tel: 222 *** ***</div>
+            <div style="margin-top:12px">Email: <a href="mailto:info@conexxiaeg.com" style="color:var(--red);text-decoration:none">info@conexxiaeg.com</a></div>
+
+            <hr style="margin:14px 0;border:none;border-top:1px solid rgba(255,255,255,0.06)">
+
+            <h4>Contacto Bata</h4>
+            <div>Dirección: Carretera de Aeropuerto</div>
+            <div style="margin-top:8px;font-weight:700">Tel: 222 *** ***</div>
+            <div style="margin-top:12px">Email: <a href="mailto:info@conexxiaeg.com" style="color:var(--red);text-decoration:none">info@conexxiaeg.com</a></div>
+        </aside>
+        </section>
+
+        <section style="margin-top:22px;padding:18px;background:linear-gradient(180deg,#fff,rgba(255,240,240,0.02));border-radius:12px">
+            <h3>¿Aún no eres cliente?</h3>
+            <p class="muted">Llámanos gratis sin compromiso</p>
+            <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+                <button class="btn" onclick="callNumber('222******')">222 *** *** — Malabo</button>
+                <button class="btn" onclick="callNumber('222******')">222 *** *** — Bata</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div style="display:flex;gap:12px;align-items:center">
+                    <div class="logo" style="width:200px;height:60px;border-radius:12px;font-weight:800">
+                        <img src="../static/img/logo-conexxia-solo-blanco.png" alt="logo-conexxia">
+                    </div>
+                </div>
+                <div style="margin-top:12px;color:#bbb;font-size:.95rem">© 2025 Conexxiaeg</div>
+            </div>
+
+            <div>
+                <h4 style="color:#fff">Servicios</h4>
+                <ul style="list-style:none;padding:0;margin:8px 0;color:#ddd">
+                    <li>Internet</li>
+                    <li>TV + Internet</li>
+                    <li>Conexxia Security</li>
+                    <li>Otros servicios</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="color:#fff">Contáctanos</h4>
+                <div style="color:#ddd;margin-top:8px">Tel: 222 *** *** (Malabo)</div>
+                <div style="color:#ddd">Tel: 222 *** *** (Bata)</div>
+                <div style="margin-top:8px"><a href="mailto:info@conexxiaeg.com" style="color:var(--accent);text-decoration:none">info@conexxiaeg.com</a></div>
+                <div style="margin-top:12px" class="socials">
+                    <a href="#" aria-label="facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" aria-label="linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" aria-label="instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // reveal
+        const reveals = document.querySelectorAll('.fade-in');
+        const io = new IntersectionObserver((ents)=>{ 
+            ents.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); }); 
+        }, {threshold:.12});
+        reveals.forEach(r=>io.observe(r));
+
+        // form validation and mock submit
+        const form = document.getElementById('contactForm');
+        const status = document.getElementById('formStatus');
+        form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        status.textContent = '';
+        const data = new FormData(form);
+        
+        // basic validation
+        const name = data.get('name').trim(), email = data.get('email').trim(), message = data.get('message').trim();
+        if(!name || !email || !message){ 
+            status.textContent = 'Completa los campos obligatorios.'; 
+            status.style.color='crimson'; return; 
+        }
+
+        // fake send
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true; btn.textContent = 'Enviando...';
+        await new Promise(r=>setTimeout(r, 900));
+        btn.disabled = false; btn.textContent = 'Enviar';
+        form.reset();
+        status.style.color='green'; status.textContent = 'Mensaje enviado. Gracias — le responderemos pronto.';
+        });
+
+        function callNumber(n){
+            alert('Llamar: ' + n);
+        }
+    </script>
+</body>
+</html>

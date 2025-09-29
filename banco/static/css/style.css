@@ -1,0 +1,114 @@
+:root{
+    --primary-color: #4CAF50;
+    --secondary-color: #f44336;
+    --background-color: #f0f0f0;
+    --color: rgb(161, 160, 160);
+    --text-color: #333;
+    --border-radius: 8px;
+    --padding: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ESTILOS GENERALES */
+
+ul {
+    display: flex;
+}
+
+li, a {
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hiden__nav {
+    display: none;
+}
+
+.btn {
+    background-color: none;
+    border: 1px solid red;
+    padding: 1rem;
+    min-width: 150px;
+}
+
+/* FIN de Estilos generales */
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-color);
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Header estilos */
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    padding: 0.7rem 0;
+
+    position: fixed;
+}
+
+.header {
+    width: 90%;
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color);
+}
+
+.nav {
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+}
+/* Fin de estilos del header */
+
+/* Main */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 80vh;
+}
+
+/* Tophero */
+.tophero {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(to right, rgba(8, 48, 4, 0.842) 0%, rgba(51, 150, 89, 0.418) 100%), url("../img/image.png") no-repeat center;
+    background-size: cover;
+}
+
+.tophero__cont {
+    width: 60%;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+    align-items: center;
+    color: white;
+}
+/* Fin tophero */

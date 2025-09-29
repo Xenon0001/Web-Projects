@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoreTic - Ventas Simuladas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+
+    <div id="guide-overlay" class="guide-overlay guide-overlay--active">
+        <div class="guide-overlay__content">
+            <h2 class="guide-overlay__title">Bienvenido a StoreTic</h2>
+            <ul class="guide-overlay__list">
+                <li><i class="fas fa-money-check-alt"></i>Realiza compras simuladas. Con un crédito inicial de <strong>$500</strong>. ¡Se reinicia al llegar a cero!</li>
+                <li><i></i>Este es uno de mis proyectos de práctica. Con este proyecto buscaba entender la lógica detrás de una tiende online.</li>
+                <li><i></i><strong>Es todavía un prototipo</strong> pero gracias a esto pude entender para iniciar la contrucción del Backend en Django, y con esa versión finalizar por fin el proyecto.</li>
+            </ul>
+            <button class="guide-overlay__button" onclick="document.getElementById('guide-overlay').classList.remove('guide-overlay--active');">Sin más que decir, Go to start</button>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="header__logo">Store<span class="header__logo--tic">Tic</span></div>
+        <nav class="header__nav">
+            <a href="#" class="header__nav-link">Tienda</a>
+            <a href="templates/admin.html" class="header__nav-link">Admin Panel</a>
+        </nav>
+        <div class="header__actions">
+            <span class="header__credit">Crédito: $<span id="user-credit">500</span></span>
+            <button class="header__cart-button" id="cart-button" aria-label="Ver Carrito">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="header__cart-count" id="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero" style="min-height: 70vh;">
+        <div class="hero__carousel" id="hero-carousel">
+            </div>
+        <div class="hero__content">
+            <h1 class="hero__title">Innovación en tus manos.</h1>
+            <p class="hero__subtitle">Simula la compra de la tecnología más avanzada.</p>
+            <a href="#products-section" class="hero__cta-button">Ver Productos ✨</a>
+        </div>
+    </section>
+
+    <main class="main-content" id="products-section">
+
+        <section class="filter-controls">
+            <div class="filter-controls__categories" id="category-filters">
+                <button class="filter-controls__button filter-controls__button--active" data-category="all">Todos</button>
+                </div>
+            <div class="filter-controls__search">
+                <i class="fas fa-search filter-controls__search-icon"></i>
+                <input type="text" id="search-input" class="filter-controls__search-input" placeholder="Buscar productos en tiempo real...">
+            </div>
+        </section>
+
+        <section class="product-list" id="product-list">
+            </section>
+
+        <section class="product-detail-section" id="product-detail-section">
+            <button class="product-detail-section__close-button" onclick="closeProductDetail()"><i class="fas fa-times"></i> Cerrar</button>
+            <div id="product-detail-content">
+                </div>
+            
+            <div class="product-detail-section__related">
+                <h3 class="product-detail-section__related-title">Productos Relacionados en la misma Categoría</h3>
+                <div class="product-list product-list--related" id="related-products-list">
+                    </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-modal__header">
+            <h3 class="cart-modal__title">Mi Carrito <i class="fas fa-shopping-basket"></i></h3>
+            <button class="cart-modal__close-button" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-modal__list" id="cart-items-list">
+            </div>
+        <div class="cart-modal__footer">
+            <div class="cart-modal__total">
+                Total: $<span id="cart-total">0.00</span>
+            </div>
+            <button class="cart-modal__checkout-button" onclick="checkout()">Realizar Compra 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        /**
+* ===========================================================================
+* MODELO DE DATOS INICIALES (Simulación de BBDD)
+* ===========================================================================
+*/
+
+// Datos de productos con descuentos simulados
+const initialProducts = [
+    { id: 1, name: "Drone Plegable X500", category: "Drones", price: 350.00, discount: 50.00, features: "Cámara 4K, 30 min de vuelo, GPS", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.iFnSgTCYuWvqHegctL0u6gHaGX%3Fpid%3DApi&f=1&ipt=00550bd57b52a225feff0ae41da13e123e72eb76c235e3edef324dff6ed36296&ipo=images" },
+    { id: 2, name: "Smartwatch Elite 9", category: "Wearables", price: 199.99, discount: 0.00, features: "Monitor de salud avanzado, 7 días de batería", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.OG4FOoVJKTdivZ_0sY1SlQHaER%3Fpid%3DApi&f=1&ipt=404b196fcf9efacc5aeb92a4caa17b1798501859ce9f6b504563470b1ffeb4ce&ipo=images" },
+    { id: 3, name: "Auriculares Inalámbricos Pro", category: "Audio", price: 120.00, discount: 30.00, features: "Cancelación de ruido activa, 24 horas de autonomía", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.pfl6U-fgl3gc70M5vGkJtwHaHa%3Fpid%3DApi&f=1&ipt=a7ac2225ecd9fb10200821ddcd90dfea3cd797560f504786bbb6c4e9cb66f3ce&ipo=images" },
+    { id: 4, name: "Teclado Mecánico RGB", category: "Accesorios", price: 85.50, discount: 0.00, features: "Switches táctiles, Iluminación RGB personalizable", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.kVScZRqecUfTLZErno9VGwHaD7%3Fpid%3DApi&f=1&ipt=4be036f748c93217a61619bb64ccfafe6835983826108d0322721892e5ccbb13&ipo=images" },
+    { id: 5, name: "Monitor Curvo 32 Pulgadas", category: "Monitores", price: 499.00, discount: 0.00, features: "144Hz, QHD, Tiempo de respuesta de 1ms", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.K-RqSYfYrrcPzJro0wCjBQHaHa%3Fpid%3DApi&f=1&ipt=efa2aefbb628a76f418c65b2699ca672a1cba9e48f9f11cb25ca22670385f252&ipo=images" },
+    { id: 6, name: "Cámara Réflex Digital S1", category: "Fotografía", price: 750.00, discount: 100.00, features: "24MP, Video 4K, Lente 18-55mm incluida", image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.bwmoEK3NHhkm1VdHmpmE9AHaHa%3Fpid%3DApi&f=1&ipt=5fc0a2beca21e18dc9ea6f90492cef0ea0502c25c7671f9762049135de15e0b2&ipo=images" },
+];
+
+// Estado de la aplicación
+let products = [...initialProducts]; // Copia de los productos para la tienda
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let userCredit = parseFloat(localStorage.getItem('userCredit')) || 500.00;
+const defaultUsername = "user001"; // Nombre de usuario por defecto
+let productRequests = JSON.parse(localStorage.getItem('productRequests')) || []; // Para la simulación de encargos/solicitudes
+
+/**
+ * ==========================================================================
+ * UTILIDADES DE RENDERIZADO (HTML Generation)
+ * ==========================================================================
+ */
+
+/**
+ * Genera el HTML para una Card de Producto.
+ * @param {Object} product - Objeto del producto.
+ * @returns {string} HTML de la card.
+ */
+function createProductCardHTML(product) {
+    const finalPrice = product.price - product.discount;
+    const discountTag = product.discount > 0 ? `<span class="product-card__discount-tag">-${(product.discount / product.price * 100).toFixed(0)}%</span>` : '';
+    const oldPrice = product.discount > 0 ? `<span class="product-card__price--discount">$${product.price.toFixed(2)}</span>` : '';
+
+    return `
+        <div class="product-card" data-id="${product.id}" onclick="showProductDetail(${product.id})">
+            <img src="${product.image}" alt="${product.name}" class="product-card__image">
+            <div class="product-card__info">
+                <h3 class="product-card__name">${product.name}</h3>
+                <p class="product-card__features">${product.features}</p>
+                <div class="product-card__price-box">
+                    <div>
+                        ${discountTag}
+                        <span class="product-card__price">$${finalPrice.toFixed(2)}</span>
+                        ${oldPrice}
+                    </div>
+                    <button class="product-card__add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">
+                        <i class="fas fa-cart-plus"></i> Añadir
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Renderiza la lista de productos en el DOM.
+ * @param {Array} productArray - Array de productos a mostrar.
+ * @param {string} containerId - ID del contenedor donde renderizar.
+ */
+function renderProductList(productArray, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = productArray.map((product, index) => {
+        // Añade un retraso en la animación de carga (cardLoad)
+        const html = createProductCardHTML(product);
+        return `<div style="animation-delay: ${index * 0.1}s">${html}</div>`;
+    }).join('');
+}
+
+/**
+ * Renderiza los botones de filtro de categoría.
+ */
+function renderCategoryFilters() {
+    const container = document.getElementById('category-filters');
+    if (!container) return;
+
+    // Obtener categorías únicas
+    const categories = [...new Set(products.map(p => p.category))];
+
+    // Generar botones
+    const categoryButtonsHTML = categories.map(category =>
+        `<button class="filter-controls__button" data-category="${category}">${category}</button>`
+    ).join('');
+
+    // Insertar después del botón "Todos"
+    container.innerHTML += categoryButtonsHTML;
+
+    // Asignar eventos a los botones
+    container.querySelectorAll('.filter-controls__button').forEach(button => {
+        button.addEventListener('click', () => filterProductsByCategory(button.getAttribute('data-category')));
+    });
+}
+
+/**
+ * ==========================================================================
+ * LÓGICA DEL CARRUSEL Y ANIMACIONES
+ * ==========================================================================
+ */
+
+const heroImages = [
+    { url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.C-kDG7QV7FLokGQECi-jEAHaDt%3Fpid%3DApi&f=1&ipt=bdd1312d06bc134c9498f4d4953bd7a0c79edd42010215964e3e2a1a9588caaa&ipo=images", alt: "Tecnología de Vanguardia" },
+    { url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.5bUEWW-Y2MPurqNVUIm-hQHaE6%3Fpid%3DApi&f=1&ipt=5080027a2f3829df7bd60e1343b4330d3b7b29880baf8fd168563159da89ffcc&ipo=images", alt: "Diseño Moderno" },
+    { url: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.xxbpMc2AmoLLOBPAcxqaVgHaE8%3Fpid%3DApi&f=1&ipt=ca47e89582fc7399fa2fa4ae29854f0c411ceef7368507ffbca226be88c2bf7a&ipo=images", alt: "Ventas Online" },
+];
+
+let currentSlide = 0;
+
+/**
+ * Inicializa y gestiona el carrusel del TopHero.
+ */
+function initializeCarousel() {
+    const carousel = document.getElementById('hero-carousel');
+    if (!carousel) return;
+
+    // 1. Crear los elementos del carrusel en el DOM
+    heroImages.forEach((img, index) => {
+        const div = document.createElement('div');
+        div.className = 'hero__item';
+        div.style.backgroundImage = `url(${img.url})`;
+        div.setAttribute('aria-label', img.alt);
+        if (index === 0) {
+            div.classList.add('hero__item--active');
+        }
+        carousel.appendChild(div);
+    });
+
+    const items = carousel.querySelectorAll('.hero__item');
+
+    // 2. Función para cambiar de slide
+    function nextSlide() {
+        items[currentSlide].classList.remove('hero__item--active');
+        currentSlide = (currentSlide + 1) % items.length;
+        items[currentSlide].classList.add('hero__item--active');
+    }
+
+    // 3. Iniciar el carrusel
+    setInterval(nextSlide, 5000); // Cambia cada 5 segundos
+}
+
+/**
+ * Inicializa la animación de Scroll para los Filtros
+ */
+function initializeScrollAnimation() {
+    const filterControls = document.querySelector('.filter-controls');
+    if (!filterControls) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                filterControls.classList.add('filter-controls--visible');
+                observer.unobserve(entry.target); // Dejar de observar después de la primera aparición
+            }
+        });
+    }, { threshold: 0.1 }); // Se activa cuando el 10% del elemento es visible
+
+    observer.observe(filterControls);
+}
+
+
+/**
+ * ==========================================================================
+ * LÓGICA DE FILTROS Y BÚSQUEDA
+ * ==========================================================================
+ */
+
+let currentFilter = { category: 'all', search: '' };
+
+/**
+ * Aplica los filtros de categoría y búsqueda al listado de productos.
+ */
+function applyFilters() {
+    let filteredProducts = products;
+
+    // 1. Filtro por Categoría
+    if (currentFilter.category !== 'all') {
+        filteredProducts = filteredProducts.filter(p => p.category === currentFilter.category);
+    }
+
+    // 2. Filtro por Búsqueda (en tiempo real)
+    if (currentFilter.search) {
+        const searchTerm = currentFilter.search.toLowerCase();
+        filteredProducts = filteredProducts.filter(p =>
+            p.name.toLowerCase().includes(searchTerm) ||
+            p.features.toLowerCase().includes(searchTerm) ||
+            p.category.toLowerCase().includes(searchTerm)
+        );
+    }
+
+    renderProductList(filteredProducts, 'product-list');
+}
+
+/**
+ * Filtra los productos por una categoría específica.
+ * @param {string} category - Nombre de la categoría o 'all'.
+ */
+function filterProductsByCategory(category) {
+    currentFilter.category = category;
+
+    // Actualizar clase activa de los botones
+    document.querySelectorAll('#category-filters .filter-controls__button').forEach(btn => {
+        btn.classList.remove('filter-controls__button--active');
+        if (btn.getAttribute('data-category') === category) {
+            btn.classList.add('filter-controls__button--active');
+        }
+    });
+
+    applyFilters();
+}
+
+/**
+ * Inicializa el listener para la búsqueda en tiempo real.
+ */
+function initializeSearch() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (event) => {
+            currentFilter.search = event.target.value;
+            applyFilters();
+        });
+    }
+}
+
+/**
+ * ==========================================================================
+ * LÓGICA DE DETALLE DE PRODUCTO
+ * ==========================================================================
+ */
+
+/**
+ * Muestra la vista detallada de un producto.
+ * @param {number} productId - ID del producto a mostrar.
+ */
+function showProductDetail(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const detailSection = document.getElementById('product-detail-section');
+    const detailContent = document.getElementById('product-detail-content');
+    const relatedList = document.getElementById('related-products-list');
+
+    const finalPrice = product.price - product.discount;
+    const oldPriceHTML = product.discount > 0 ? `<span class="detail__price--old">$${product.price.toFixed(2)}</span>` : '';
+    const discountBadgeHTML = product.discount > 0 ? `<span class="detail__discount-badge">¡Ahorra $${product.discount.toFixed(2)}!</span>` : '';
+
+    // Generar contenido detallado
+    detailContent.innerHTML = `
+        <div class="detail__container">
+            <div class="detail__image-box">
+                <img src="${product.image}" alt="${product.name}" class="detail__image">
+            </div>
+            <div class="detail__info-box">
+                <p class="detail__category">${product.category}</p>
+                <h2 class="detail__name">${product.name}</h2>
+                <p class="detail__description">${product.features} (Descripción extendida y detallada del producto: ${product.name}). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <div class="detail__price-row">
+                    <span class="detail__price">$${finalPrice.toFixed(2)}</span>
+                    ${oldPriceHTML}
+                    ${discountBadgeHTML}
+                </div>
+                <button class="detail__add-to-cart" onclick="addToCart(${product.id}); closeProductDetail()">
+                    <i class="fas fa-cart-plus"></i> Agregar al Carrito
+                </button>
+            </div>
+        </div>
+    `;
+
+    // Productos relacionados (misma categoría, excluyendo el actual)
+    const relatedProducts = products
+        .filter(p => p.category === product.category && p.id !== productId)
+        .slice(0, 3); // Limitar a 3 productos
+
+    renderProductList(relatedProducts, 'related-products-list');
+
+    // Mostrar sección
+    detailSection.classList.add('product-detail-section--active');
+}
+
+/**
+ * Oculta la vista detallada del producto.
+ */
+function closeProductDetail() {
+    document.getElementById('product-detail-section').classList.remove('product-detail-section--active');
+}
+
+
+/**
+ * ==========================================================================
+ * LÓGICA DEL CARRITO DE COMPRAS Y CRÉDITO
+ * ==========================================================================
+ */
+
+/**
+ * Actualiza la visualización del crédito del usuario.
+ */
+function updateCreditDisplay() {
+    const creditElement = document.getElementById('user-credit');
+    if (creditElement) {
+        creditElement.textContent = userCredit.toFixed(2);
+        localStorage.setItem('userCredit', userCredit.toFixed(2));
+
+        // Reiniciar crédito si llega a cero o menos (Simulación)
+        if (userCredit <= 0) {
+            alert("🚨 ¡Tu crédito ha llegado a cero! Se reiniciará tu saldo inicial de $500. ¡Sigue comprando!");
+            userCredit = 500.00;
+            updateCreditDisplay();
+        }
+    }
+}
+
+/**
+ * Añade un producto al carrito.
+ * @param {number} productId - ID del producto a añadir.
+ */
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const finalPrice = product.price - product.discount;
+    const existingItem = cart.find(item => item.id === productId);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: finalPrice,
+            image: product.image,
+            quantity: 1
+        });
+    }
+
+    saveAndRenderCart();
+    alert(`🎉 ¡"${product.name}" añadido al carrito!`);
+}
+
+/**
+ * Elimina un producto del carrito o reduce su cantidad.
+ * @param {number} productId - ID del producto a eliminar.
+ */
+function removeFromCart(productId) {
+    const itemIndex = cart.findIndex(item => item.id === productId);
+
+    if (itemIndex > -1) {
+        const item = cart[itemIndex];
+        if (item.quantity > 1) {
+            item.quantity -= 1;
+        } else {
+            cart.splice(itemIndex, 1);
+        }
+    }
+
+    saveAndRenderCart();
+}
+
+/**
+ * Calcula el total del carrito y actualiza el DOM y el contador.
+ */
+function saveAndRenderCart() {
+    const cartList = document.getElementById('cart-items-list');
+    const cartCount = document.getElementById('cart-count');
+    const cartTotalElement = document.getElementById('cart-total');
+
+    if (!cartList || !cartCount || !cartTotalElement) return;
+
+    localStorage.setItem('cart', JSON.stringify(cart)); // Guardar en LocalStorage
+    
+    let total = 0;
+    let itemCount = 0;
+    let itemsHTML = '';
+
+    if (cart.length === 0) {
+        itemsHTML = '<p style="text-align: center; color: #6c757d; margin-top: 30px;">Tu carrito está vacío. ¡Añade productos!</p>';
+    } else {
+        itemsHTML = cart.map(item => {
+            const itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            itemCount += item.quantity;
+
+            return `
+                <div class="cart-item">
+                    <img src="${item.image}" alt="${item.name}" class="cart-item__image">
+                    <div class="cart-item__info">
+                        <p class="cart-item__name">${item.name}</p>
+                        <p class="cart-item__price">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                    </div>
+                    <button class="cart-item__remove" onclick="removeFromCart(${item.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    cartList.innerHTML = itemsHTML;
+    cartCount.textContent = itemCount;
+    cartTotalElement.textContent = total.toFixed(2);
+}
+
+/**
+ * Muestra u oculta el modal del carrito.
+ */
+function toggleCart() {
+    const cartModal = document.getElementById('cart-modal');
+    if (cartModal) {
+        cartModal.classList.toggle('cart-modal--active');
+    }
+}
+
+/**
+ * Simula el proceso de pago.
+ */
+function checkout() {
+    const total = parseFloat(document.getElementById('cart-total').textContent);
+
+    if (cart.length === 0) {
+        alert("¡Tu carrito está vacío! Agrega productos antes de comprar.");
+        return;
+    }
+
+    if (userCredit < total) {
+        alert(`❌ Error de Compra: ¡Crédito insuficiente! Necesitas $${total.toFixed(2)} y solo tienes $${userCredit.toFixed(2)}.`);
+        return;
+    }
+
+    // 1. Simular el débito
+    userCredit -= total;
+    updateCreditDisplay();
+
+    // 2. Simular el registro del encargo (para el Admin Panel)
+    const request = {
+        id: Date.now(),
+        username: defaultUsername,
+        date: new Date().toLocaleString(),
+        total: total.toFixed(2),
+        items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
+        status: 'Pendiente'
+    };
+    productRequests.push(request);
+    localStorage.setItem('productRequests', JSON.stringify(productRequests)); // Guardar en el almacenamiento del navegador
+
+    // 3. Limpiar carrito
+    cart = [];
+    saveAndRenderCart();
+
+    // 4. Mostrar mensaje de éxito
+    alert(`✅ ¡Compra simulada con éxito! Se ha debitado $${total.toFixed(2)} de tu crédito. Te quedan $${userCredit.toFixed(2)}.`);
+    toggleCart();
+}
+
+/**
+ * ==========================================================================
+ * LÓGICA DE ADMINISTRACIÓN (Solo para el Admin Panel)
+ * ==========================================================================
+ */
+
+/**
+ * Carga y renderiza la lista de productos en la tabla del admin.
+ */
+function renderAdminProductTable() {
+    // Solo se ejecuta en admin.html
+    if (document.getElementById('admin-product-table-body')) {
+        const tableBody = document.getElementById('admin-product-table-body');
+        tableBody.innerHTML = products.map(product => `
+            <tr>
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>$${product.price.toFixed(2)}</td>
+                <td>$${product.discount.toFixed(2)}</td>
+                <td>
+                    <button class="admin-table__actions-button" onclick="editProduct(${product.id})"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="admin-table__actions-button" style="background-color: #dc3545;" onclick="deleteProduct(${product.id})"><i class="fas fa-trash"></i> Eliminar</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+}
+
+/**
+ * Simula la eliminación de un producto (solo en el Admin Panel).
+ * @param {number} productId - ID del producto a eliminar.
+ */
+function deleteProduct(productId) {
+    if (confirm(`¿Estás seguro de eliminar el producto con ID ${productId}?`)) {
+        products = products.filter(p => p.id !== productId);
+        localStorage.setItem('products', JSON.stringify(products));
+        renderAdminProductTable();
+        alert("Producto eliminado. Los cambios se verán al recargar la tienda.");
+    }
+}
+
+/**
+ * Simula la adición de un producto (solo en el Admin Panel).
+ */
+function addProduct(event) {
+    event.preventDefault();
+    const form = event.target;
+
+    const newProduct = {
+        id: Date.now(), // ID único
+        name: form.elements['product-name'].value,
+        category: form.elements['product-category'].value,
+        price: parseFloat(form.elements['product-price'].value) || 0,
+        discount: parseFloat(form.elements['product-discount'].value) || 0,
+        features: form.elements['product-features'].value,
+        image: form.elements['product-image'].value || "https://via.placeholder.com/600x400/3b82f6/ffffff?text=Nuevo+Producto"
+    };
+
+    products.push(newProduct);
+    localStorage.setItem('products', JSON.stringify(products));
+    renderAdminProductTable();
+    alert(`🎉 Producto "${newProduct.name}" agregado con éxito. Actualiza la Tienda para verlo.`);
+    form.reset();
+}
+
+/**
+ * Renderiza la lista de solicitudes/encargos en el Admin Panel.
+ */
+function renderAdminRequests() {
+    if (document.getElementById('admin-requests-container')) {
+        const container = document.getElementById('admin-requests-container');
+
+        if (productRequests.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: #6c757d; margin-top: 20px;">No hay solicitudes de compra recientes.</p>';
+            return;
+        }
+
+        container.innerHTML = productRequests.map(req => `
+            <div class="admin-requests__item">
+                <strong>ID: ${req.id}</strong> | Usuario: ${req.username} | Fecha: ${req.date}<br>
+                **Total: $${req.total}** | Status: <span style="color: green;">${req.status}</span>
+                <ul>
+                    ${req.items.map(item => `
+                        <li>${item.name} (${item.quantity} uds)</li>
+                    `).join('')}
+                </ul>
+            </div>
+        `).join('');
+
+        // Actualizar estadísticas de encargos
+        document.getElementById('stats-encargos').textContent = productRequests.length;
+    }
+}
+
+/**
+ * ==========================================================================
+ * INICIALIZACIÓN GENERAL (Se ejecuta al cargar index.html)
+ * ==========================================================================
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Cargar datos desde localStorage si existen
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+        products = JSON.parse(storedProducts);
+    } else {
+        // Si no hay datos, guardamos los iniciales
+        localStorage.setItem('products', JSON.stringify(initialProducts));
+    }
+    
+    // 2. Inicialización de la Tienda (index.html)
+    if (document.getElementById('product-list')) {
+        updateCreditDisplay();
+        renderProductList(products, 'product-list');
+        renderCategoryFilters();
+        initializeSearch();
+        saveAndRenderCart();
+        initializeCarousel();
+        initializeScrollAnimation();
+
+        // Listener para el botón del carrito
+        const cartButton = document.getElementById('cart-button');
+        if (cartButton) {
+            cartButton.addEventListener('click', toggleCart);
+        }
+    }
+
+    // 3. Inicialización del Admin Panel (admin.html)
+    if (document.getElementById('admin-login-form')) {
+        initializeAdminLogin();
+        // El resto de la lógica del admin se carga tras el login exitoso
+    }
+
+});
+
+// ==========================================================================
+// LÓGICA DE LOGIN DEL ADMIN (para admin.html)
+// ==========================================================================
+
+function initializeAdminLogin() {
+    const loginForm = document.getElementById('admin-login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleAdminLogin);
+    }
+}
+
+function handleAdminLogin(event) {
+    event.preventDefault();
+    const form = event.target;
+    const username = form.elements['admin-user'].value;
+    const password = form.elements['admin-pass'].value;
+
+    if (username === 'admin' && password === 'admin') {
+        alert('Acceso de administrador concedido.');
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        // Redireccionar o mostrar el contenido del admin
+        window.location.reload(); // Recarga la página para mostrar el contenido
+    } else {
+        alert('Credenciales incorrectas. user: admin, pasw: admin');
+    }
+}
+    </script>
+</body>
+</html>
